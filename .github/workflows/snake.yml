@@ -1,6 +1,9 @@
 name: Generate snake animation
 
 on:
+  push:
+      branches:
+        - main
   schedule:
     - cron: "0 0 * * *"   # Chạy vào 0 giờ mỗi ngày
   workflow_dispatch:       # Cho phép chạy thủ công
