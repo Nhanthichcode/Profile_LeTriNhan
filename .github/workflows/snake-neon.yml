@@ -1,0 +1,31 @@
+name: Generate snake animation
+
+on:
+  push:
+      branches:
+        - main
+  schedule:
+    - cron: "0 0 * * *"   # Chạy vào 0 giờ mỗi ngày
+  workflow_dispatch:       # Cho phép chạy thủ công
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate snake.svg
+        uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            dist/snake-neon.svg?color_snake=#ff2a6d&color_dots=#0d0d0d,#1a1a1a,#2a2a2a,#3a3a3a,#4a4a4a
+
+      - name: Deploy to branch 'output'
+        uses: crazy-max/ghaction-github-pages@v3.1.0
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
